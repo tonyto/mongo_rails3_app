@@ -1,7 +1,6 @@
-MongoMapper.database = "app-#{Rails.env}"
+include Mongo
 
-if defined?(PhusionPassenger)
-   PhusionPassenger.on_event(:starting_worker_process) do |forked|
-     MongoMapper.connection.connect_to_master if forked
-   end
-end
+connection = Mongo::Connection.from_uri("mongodb://<username>:<password>@flame.mongohq.com:<port>/mongo-rails3-app")
+
+MongoMapper.connection = connection
+MongoMapper.database = connection.db("mongo-rails3-app").name
